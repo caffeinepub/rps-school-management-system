@@ -1,56 +1,39 @@
-# RPS International School — Sector 50, Gurugram: School Management System
+# RPS School Management System
 
 ## Current State
-New project. No existing code.
+- Landing page has a single 'TAKE ME NOW' button that navigates to `/login`
+- No public-facing website pages exist
+- Login page is accessible directly; no portal login entry from a public header
+- Login flow is triple-factor (Username → Password → Token → Device fingerprint)
+- No signup form exists, but the subtitle says 'Secure Management Portal'
 
 ## Requested Changes (Diff)
 
 ### Add
-- Minimalist landing page with single gold "TAKE ME NOW" CTA button leading to login
-- Triple-factor login: Username + Password + Security Token
-- Hardware fingerprint capture on login; blocked if device not on authorized list
-- 7-role RBAC system: Superior, Admin, Accountant, Teacher, Student, Parent, (+ Principal implied by Emergency Protocol)
-- Per-role dashboards with null-safe data display (no fake/placeholder data)
-- Superior portal: read-only global view — finances, grades, audit logs
-- Admin portal: user management, authorized device IDs, session blocking, impersonation mode (view-only without Password Handshake), one-time access request flow for editing Accountant/Teacher data
-- Accountant portal: FinancialLedger CRUD, fee penalty application, fee edit requests
-- Teacher portal: Academic records (A–E grading), attendance management, leave management, emergency leave protocol
-- Student portal: read-only grades, schedules, file sharing up to 1 GB via blob-storage
-- Parent portal: fee payment view, student progress read, teacher chat, sibling linkage under single Parent_ID
-- Universal Mesh Requests: any role can send formal requests to any other role
-- Internal messaging/chat with file attachment support (blob-storage)
-- Emergency Leave: high-priority flag, bypasses queue, triggers substitution ticket, alerts Admin
-- Audit Engine: immutable log per change — who, what, when, old value, new value, device ID, deep-link to record
-- Sibling linkage: multiple students under one Parent_ID, sibling fee discount flag
-- Password Handshake flow for Admin elevated edit access
-- Session management: active session list, ability to block/terminate sessions
+- Public website layout with a Navy Blue/Gold header containing: school logo/name, navigation links (Home, About, Admission, Staff, Gallery), and a 'Portal Login' button
+- Public pages:
+  - `/home` — Public Home: hero section, school tagline, highlights about RPS Sector 50
+  - `/about` — About: school history, vision/mission, values
+  - `/admission` — Admission: process overview, eligibility, contact info
+  - `/staff` — Staff: if backend returns no staff records, show professional 'Staff Directory — Updating Soon' placeholder; no fake data
+  - `/gallery` — Gallery: if backend returns no gallery records, show professional 'Gallery — Coming Soon' placeholder; no fake data
+- Shared `PublicLayout` component wrapping all public pages with the header and footer
+- Route `/home` pointing to the new Public Home page
 
 ### Modify
-N/A — new project
+- Landing page: 'TAKE ME NOW' button navigates to `/home` instead of `/login`
+- Landing page subtitle: change 'Secure Management Portal' to something welcoming like 'Welcome to RPS International School'
+- App router: add all new public routes; keep all existing portal routes unchanged
+- 'Portal Login' button in the public header navigates to `/login`
 
 ### Remove
-N/A — new project
+- Any random username generation or signup form (there is none currently, but ensure none is introduced)
+- The 'Two Passwords' fields — already not present; confirm login page has only: Username, Password, Security Token, Device Fingerprint steps (no duplicate password field)
 
 ## Implementation Plan
-
-### Backend (Motoko)
-1. User store: id, username, passwordHash, securityToken, role, authorizedDeviceIds[], parentId?, siblingIds[], isBlocked
-2. Session store: sessionId, userId, deviceId, createdAt, isActive
-3. AuditLog store: immutable append-only — actorId, action, targetId, oldValue, newValue, deviceId, timestamp, deepLink
-4. AcademicRecord store: studentId, subjectId, grade (A–E | null), teacherId, updatedAt
-5. Attendance store: studentId, date, status (Present/Absent/Leave | null), teacherId
-6. FinancialLedger store: studentId, amount, type (Fee/Penalty/Discount), status, accountantId, createdAt
-7. Leave store: requestId, userId, type (Regular/Emergency), status, createdAt, substitutionTicket?
-8. MeshRequest store: fromId, toRole, toId?, subject, body, status, attachmentUrl?, createdAt
-9. Chat/Message store: threadId, fromId, toId, body, attachmentUrl?, timestamp
-10. SubstitutionTicket store: leaveId, teacherId, substituteId?, status
-11. AccessRequest store: requestorId (Admin), targetRole, targetDataId, reason, approvedBy?, status, otp?
-12. DeviceFingerprint store: userId, deviceId, label, addedAt, addedByAdminId
-
-### Frontend
-- Landing page: navy background, centered gold "TAKE ME NOW" button, no other content
-- Auth flow: username → password → security token → device check → role-based redirect
-- 7 distinct dashboard layouts per role, navy/gold/white palette
-- All data fields null-safe: show "—" or empty state, never fake values
-- Audit log viewer with deep-links
-- Shared components: MeshRequest modal, Chat thread, FileUpload (blob-storage), EmergencyLeave badge
+1. Create `PublicLayout` component: sticky navy header with logo/school name, nav links, gold 'Portal Login' button; navy/gold/white footer
+2. Create public page components: `PublicHome`, `PublicAbout`, `PublicAdmission`, `PublicStaff`, `PublicGallery`
+   - Staff and Gallery: fetch data if available; if empty array or error, show professional placeholder message
+3. Add routes in `App.tsx`: `/home`, `/about`, `/admission`, `/staff`, `/gallery`
+4. Update `LandingPage.tsx`: navigate to `/home` on 'TAKE ME NOW' click; update subtitle text
+5. Keep `LoginPage.tsx` exactly as-is (triple-factor, no signup)

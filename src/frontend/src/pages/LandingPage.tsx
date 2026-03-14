@@ -48,7 +48,7 @@ export default function LandingPage() {
         transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
       >
         <motion.button
-          onClick={() => navigate({ to: "/login" })}
+          onClick={() => navigate({ to: "/home" })}
           className="relative group px-12 py-5 font-display text-lg tracking-widest uppercase text-primary-foreground cursor-pointer"
           whileHover={{ scale: 1.04 }}
           whileTap={{ scale: 0.97 }}
@@ -76,7 +76,7 @@ export default function LandingPage() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8 }}
         >
-          Secure Management Portal
+          Rao Pahlad Singh International School
         </motion.p>
       </motion.div>
 

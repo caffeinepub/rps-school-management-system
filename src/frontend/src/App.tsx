@@ -5,7 +5,6 @@ import {
   createRootRoute,
   createRoute,
   createRouter,
-  redirect,
 } from "@tanstack/react-router";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
@@ -15,6 +14,11 @@ import ParentPortal from "./pages/portals/ParentPortal";
 import StudentPortal from "./pages/portals/StudentPortal";
 import SuperiorPortal from "./pages/portals/SuperiorPortal";
 import TeacherPortal from "./pages/portals/TeacherPortal";
+import PublicAbout from "./pages/public/PublicAbout";
+import PublicAdmission from "./pages/public/PublicAdmission";
+import PublicGallery from "./pages/public/PublicGallery";
+import PublicHome from "./pages/public/PublicHome";
+import PublicStaff from "./pages/public/PublicStaff";
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -38,6 +42,36 @@ const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/",
   component: LandingPage,
+});
+
+const homeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/home",
+  component: PublicHome,
+});
+
+const aboutRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/about",
+  component: PublicAbout,
+});
+
+const admissionRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/admission",
+  component: PublicAdmission,
+});
+
+const staffRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/staff",
+  component: PublicStaff,
+});
+
+const galleryRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/gallery",
+  component: PublicGallery,
 });
 
 const loginRoute = createRoute({
@@ -84,6 +118,11 @@ const parentRoute = createRoute({
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
+  homeRoute,
+  aboutRoute,
+  admissionRoute,
+  staffRoute,
+  galleryRoute,
   loginRoute,
   superiorRoute,
   adminRoute,
