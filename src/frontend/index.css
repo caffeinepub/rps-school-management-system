@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Navy Blue #000080 → OKLCH ~0.23 0.19 264 */
+    /* Gold #D4AF37 → OKLCH ~0.74 0.13 84 */
+    --background: 0.14 0.17 264;
+    --foreground: 0.98 0 0;
+
+    --card: 0.17 0.15 264;
+    --card-foreground: 0.98 0 0;
+
+    --popover: 0.17 0.15 264;
+    --popover-foreground: 0.98 0 0;
+
+    --primary: 0.74 0.13 84;
+    --primary-foreground: 0.14 0.17 264;
+
+    --secondary: 0.20 0.14 264;
+    --secondary-foreground: 0.98 0 0;
+
+    --muted: 0.20 0.12 264;
+    --muted-foreground: 0.65 0.05 264;
+
+    --accent: 0.74 0.13 84;
+    --accent-foreground: 0.14 0.17 264;
+
+    --destructive: 0.55 0.22 27;
+    --destructive-foreground: 0.98 0 0;
+
+    --border: 0.30 0.12 264;
+    --input: 0.20 0.14 264;
+    --ring: 0.74 0.13 84;
+
+    --radius: 0.25rem;
+
+    --sidebar: 0.11 0.14 264;
+    --sidebar-foreground: 0.98 0 0;
+    --sidebar-primary: 0.74 0.13 84;
+    --sidebar-primary-foreground: 0.14 0.17 264;
+    --sidebar-accent: 0.20 0.12 264;
+    --sidebar-accent-foreground: 0.74 0.13 84;
+    --sidebar-border: 0.25 0.12 264;
+    --sidebar-ring: 0.74 0.13 84;
+
+    --chart-1: 0.74 0.13 84;
+    --chart-2: 0.60 0.15 264;
+    --chart-3: 0.55 0.18 142;
+    --chart-4: 0.65 0.20 27;
+    --chart-5: 0.70 0.18 300;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    color-scheme: dark;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+/* Gold shimmer skeleton animation */
+@keyframes gold-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-gold {
+  background: linear-gradient(
+    90deg,
+    oklch(0.20 0.14 264) 25%,
+    oklch(0.35 0.10 84) 50%,
+    oklch(0.20 0.14 264) 75%
+  );
+  background-size: 200% 100%;
+  animation: gold-shimmer 1.8s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: oklch(0.14 0.17 264); }
+::-webkit-scrollbar-thumb { background: oklch(0.30 0.12 264); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: oklch(0.74 0.13 84); }
+
+/* Input overrides for themed form fields */
+input, textarea, select {
+  color-scheme: dark;
+}
